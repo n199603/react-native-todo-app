@@ -5,14 +5,16 @@ import Task from "./components/Task";
 
 export default function App() {
   return (
-    <View style={styles.taskWrapper}>
-      <Text style={styles.sectionTitle}>Today's tasks</Text>
-      <View style={styles.items}>
-        <Task text={"task1"}></Task>
-        <Task text={"task2"}></Task>
-        <Task></Task>
+    <View style={styles.container}>
+      <View style={styles.taskWrapper}>
+        <Text style={styles.sectionTitle}>Today's tasks</Text>
+        <View style={styles.items}>
+          <Task text={"task1"}></Task>
+          <Task text={"task2"}></Task>
+          <Task></Task>
+        </View>
+        <StatusBar style="auto" />
       </View>
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -20,7 +22,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E8EAED",
+    backgroundColor: "#F2EFE5",
   },
   taskWrapper: {
     paddingTop: 80,
@@ -30,5 +32,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  items: {},
+  items: {
+    marginTop: 30,
+  },
 });
