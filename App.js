@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -12,14 +13,34 @@ import {
 import Task from "./components/Task";
 
 export default function App() {
+  const [task, setTask] = useState();
+  const [taskItems, setTaskItems] = useState([]);
+
+  const handleAddTask = () => {
+    // console.log(task);
+    Keyboard.dismiss();
+    setTaskItems([...taskItems, task]);
+    setTask(null);
+  };
+
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
         <View style={styles.items}>
-          <Task text={"task1"}></Task>
-          <Task text={"task2"}></Task>
-          <Task text={"task3"}></Task>
+          {taskItems.map((item, index) => {
+            return (
+              <TouchableOpacity onPress={() => completeTask(index)}>
+                <Task key={index} text={item}></Task>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
       <KeyboardAvoidingView
@@ -30,8 +51,10 @@ export default function App() {
           style={styles.input}
           placeholder={"Write a task"}
           placeholderTextColor="#FFF"
+          value={task}
+          onChangeText={(text) => setTask(text)}
         ></TextInput>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
