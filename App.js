@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -11,13 +11,22 @@ import {
   View,
 } from "react-native";
 import Task from "./components/Task";
+import { save } from "./store";
 
 export default function App() {
   const [task, setTask] = useState();
   const [taskItems, setTaskItems] = useState([]);
 
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  const initialize = async () => {
+    const newTask = await loadAll();
+    setTask(newTask);
+  };
+
   const handleAddTask = () => {
-    // console.log(task);
     Keyboard.dismiss();
     setTaskItems([...taskItems, task]);
     setTask(null);
@@ -29,14 +38,18 @@ export default function App() {
     setTaskItems(itemsCopy);
   };
 
+  const onPressSave = async () => {
+    await save(task, Date.now());
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.taskWrapper}>
-        <Text style={styles.sectionTitle}>Today's tasks</Text>
+        <Text style={styles.sectionTitle}>ToDo</Text>
         <View style={styles.items}>
           {taskItems.map((item, index) => {
             return (
-              <TouchableOpacity onPress={() => completeTask(index)}>
+              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
                 <Task key={index} text={item}></Task>
               </TouchableOpacity>
             );
@@ -54,7 +67,12 @@ export default function App() {
           value={task}
           onChangeText={(text) => setTask(text)}
         ></TextInput>
-        <TouchableOpacity onPress={() => handleAddTask()}>
+        <TouchableOpacity
+          onPress={() => {
+            handleAddTask();
+            onPressSave();
+          }}
+        >
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
