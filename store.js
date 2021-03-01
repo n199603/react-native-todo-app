@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-community/async-storage";
 
-export const save = async (text, createdAt) => {
+export const save = async (task, createdAt) => {
   const key = `${createdAt}`;
   const value = JSON.stringify({
-    text,
+    task,
     createdAt,
   });
 

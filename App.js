@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import Task from "./components/Task";
-import { save } from "./store";
+import { save, loadAll } from "./store";
 
 export default function App() {
   const [task, setTask] = useState();
@@ -50,7 +50,7 @@ export default function App() {
           {taskItems.map((item, index) => {
             return (
               <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                <Task key={index} text={item}></Task>
+                <Task text={item}></Task>
               </TouchableOpacity>
             );
           })}
